@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genrobe - AI Fashion Ecosystem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#EFE9E1',   /* Primary (Cream Background) */
+                            main: '#72383D',    /* Secondary (Vintage Maroon Action) */
+                            dark: '#2D1B1E',    /* Deep Maroon/Black for Text */
+                            gold: '#D4AF37'     /* UPDATED: Brighter Metallic Gold */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            background-color: #EFE9E1;
+            color: #2D1B1E;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* The container for the 3D canvas */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* Lighter, fresher gradient */
+            background: radial-gradient(circle at center, #ffffff 0%, #EFE9E1 90%);
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 8px 32px rgba(114, 56, 61, 0.05);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #EFE9E1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #72383D;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2D1B1E;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .text-sharp {
+            text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- 3D Background Container -->
+    <div id="canvas-container"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 cursor-pointer">
+                        <img src="assets/genrobe-logo.png" alt="Genrobe Logo" class="h-8 w-auto" />
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <button class="relative overflow-hidden bg-brand-main text-white px-9 py-3 rounded-full text-sm font-semibold shadow-xl shadow-brand-main/40 before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:via-white/5 before:to-transparent before:opacity-60 cursor-default pointer-events-none">
+                            Coming Soon
+                        </button>
+
+                    </div>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-brand-dark hover:bg-brand-main/10 focus:outline-none"
+                        onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden glass border-t-0" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <button class="w-full text-left block px-3 py-2 text-base font-medium text-brand-main">Coming
+                    Soon</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="relative z-10 pt-20">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-80px)] flex flex-col justify-start items-center pt-12">
+            <div class="inline-block mb-3 animate-float">
+                <img src="assets/genrobe-logo.png" alt="Genrobe Logo" class="h-20 md:h-20 mx-auto" />
+            </div>
+            <div class="text-center max-w-4xl mx-auto">
+                <div
+                    class="inline-block px-4 py-1 rounded-full border border-brand-gold/50 bg-white/60 mb-6 backdrop-blur-sm animate-float">
+                    <span class="text-brand-dark text-sm font-bold tracking-wide uppercase">Launching Soon</span>
+                </div>
+                <h1
+                    class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight text-brand-main text-sharp">
+                    Where Fashion <br>
+                    <span class="font-extrabold">
+                        Meets Personal Style
+                    </span>
+                </h1>
+                <p class="mt-4 text-xl text-brand-dark mb-8 max-w-2xl mx-auto font-medium leading-relaxed">
+                    Genrobe is an upcoming fashion marketplace designed to help you shop smarter, style better, and
+                    express your personal look. Coming soon.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button
+                        class="px-8 py-4 rounded-full bg-brand-main text-white font-bold text-lg shadow-lg hover:bg-brand-dark transition-all transform hover:-translate-y-1">
+                        <a href="https://forms.gle/dCziN8RGpSmjygEh8" target="_blank">
+                            Join Genrobe Early
+                        </a>
+                    </button>
+                    <a href="#contact" class="px-8 py-4 rounded-full glass
+                    text-brand-dark font-semibold text-lg
+                    border border-brand-dark/10
+                    transition-all duration-300
+                    hover:bg-white hover:border-brand-main hover:text-brand-main">
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div id="wardrobe" class="py-24 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-brand-dark">The Digital Wardrobe (Coming Soon)
+                    </h2>
+                    <p class="text-brand-dark/80 max-w-2xl mx-auto">A preview of Genrobe’s upcoming fashion and styling
+                        experience — designed to help you style smarter.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div
+                        class="glass p-8 rounded-2xl hover:bg-white/80 transition-all duration-300 group shadow-sm hover:shadow-xl border-t-4 border-t-transparent hover:border-t-brand-main">
+                        <div
+                            class="w-12 h-12 bg-brand-gold/20 rounded-full flex items-center justify-center mb-6 text-yellow-700 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-shopping-bag text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-brand-dark">Global Marketplace</h3>
+                        <p class="text-brand-dark/80">Discover clothing from multiple sellers and brands, all brought
+                            together in one upcoming fashion marketplace.
+                        </p>
+                    </div>
+
+
+                    <!-- Feature 2 -->
+                    <div
+                        class="glass p-8 rounded-2xl hover:bg-white/80 transition-all duration-300 group shadow-sm hover:shadow-xl border-t-4 border-t-transparent hover:border-t-brand-main">
+                        <div
+                            class="w-12 h-12 bg-brand-dark/10 rounded-full flex items-center justify-center mb-6 text-brand-dark group-hover:scale-110 transition-transform">
+                            <i class="fas fa-tshirt text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-brand-dark">Smart Wardrobe</h3>
+                        <p class="text-brand-dark/80">Upload photos of your clothing and experiment with mix-and-match
+                            combinations before deciding what to wear.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div
+                        class="glass p-8 rounded-2xl hover:bg-white/80 transition-all duration-300 group shadow-sm hover:shadow-xl border-t-4 border-t-transparent hover:border-t-brand-main">
+                        <div
+                            class="w-12 h-12 bg-brand-main/10 rounded-full flex items-center justify-center mb-6 text-brand-main group-hover:scale-110 transition-transform">
+                            <i class="fas fa-magic text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-brand-dark">AI Stylist</h3>
+                        <p class="text-brand-dark/80">Style your outfits digitally and explore smart outfit suggestions
+                            designed to match your personal fashion sense.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="py-20 relative overflow-hidden">
+            <div class="absolute inset-0 bg-brand-main/5 z-0"></div>
+            <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+                <h2 class="text-4xl font-bold mb-6 text-brand-dark">The Future of Personal Style Begins Soon.
+                </h2>
+                <p class="text-xl text-brand-dark/80 mb-8">Genrobe is building an intelligent fashion ecosystem for
+                    discovering, styling, and shopping.
+
+                </p>
+                <button
+                    class="px-10 py-4 bg-brand-main text-white font-bold rounded-full hover:bg-brand-dark transition-colors shadow-xl">
+                    Coming Soon
+                </button>
+            </div>
+        </div>
+        <!-- Contact Us -->
+        <!-- Contact Us -->
+        <section id="contact" class="py-20 relative">
+            <div class="max-w-xl mx-auto text-center px-4">
+
+                <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-4">
+                    Get in Touch
+                </h2>
+
+                <p class="text-brand-dark/80 mb-10 text-lg">
+                    Questions, support, or collaborations — reach out to us anytime.
+                </p>
+
+                <div class="glass px-8 py-6 rounded-2xl shadow-md space-y-5">
+
+                    <div>
+                        <p class="text-sm text-brand-dark/60 mb-1">Official Contact</p>
+                        <a href="mailto:genrobeofficial@gmail.com"
+                            class="text-brand-main font-semibold text-lg hover:underline">
+                            genrobeofficial@gmail.com
+                        </a>
+                    </div>
+
+                    <div class="border-t border-brand-dark/10 pt-4">
+                        <p class="text-sm text-brand-dark/60 mb-1">Help & Support</p>
+                        <a href="mailto:genrobehelp@gmail.com"
+                            class="text-brand-main font-semibold text-lg hover:underline">
+                            genrobehelp@gmail.com
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        </section>
+
+        <footer class="border-t border-brand-dark/10 py-12 bg-white/30 backdrop-blur-md">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+                <img src="assets/genrobe-logo.png" alt="Genrobe Logo" class="h-8 w-auto" />
+                <div class="text-brand-dark/70 text-sm">
+                    &copy; 2025 Genrobe Fashion Tech. All rights reserved.
+                </div>
+                <div class="flex gap-8 text-brand-dark">
+
+                    <!-- Instagram -->
+                    <a href="https://www.instagram.com/_genrobe?igsh=MW12YTNiNmd1ZXp6" target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-brand-main transition-all transform hover:scale-125">
+                        <i class="fab fa-instagram text-2xl"></i>
+                    </a>
+
+                    <!-- LinkedIn -->
+                    <a href="#" class="hover:text-brand-main transition-all transform hover:scale-125">
+                        <i class="fab fa-linkedin text-2xl"></i>
+                    </a>
+
+                    <!-- TikTok -->
+                    <a href="#" class="hover:text-brand-main transition-all transform hover:scale-125">
+                        <i class="fab fa-tiktok text-2xl"></i>
+                    </a>
+
+                </div>
+
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // --- THREE.JS SETUP ---
+        const container = document.getElementById('canvas-container');
+
+
+        // Scene
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0xEFE9E1, 0.001); // Reduced fog for clarity
+
+        // Camera
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 25;
+        camera.position.y = 3;
+
+        // Renderer
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.outputEncoding = THREE.sRGBEncoding; // Brighter color output
+        container.appendChild(renderer.domElement);
+
+
+        // --- OBJECTS: FLOATING PARTICLES ---
+        // Just the dots, as requested.
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 500;
+        const posArray = new Float32Array(particlesCount * 3);
+        const colArray = new Float32Array(particlesCount * 3);
+
+        const color1 = new THREE.Color(0x72383D); // Maroon
+        const color2 = new THREE.Color(0xD4AF37); // Bright Gold
+
+        for (let i = 0; i < particlesCount; i++) {
+            // Spread them around nicely in 3D space
+            const r = 5 + Math.random() * 25;
+            const theta = Math.random() * Math.PI * 2;
+            const y = (Math.random() - 0.5) * 40;
+
+            posArray[i * 3] = r * Math.cos(theta);
+            posArray[i * 3 + 1] = y;
+            posArray[i * 3 + 2] = r * Math.sin(theta);
+
+            // Bias towards gold for brightness
+            const choice = Math.random() > 0.4 ? color2 : color1;
+            colArray[i * 3] = choice.r;
+            colArray[i * 3 + 1] = choice.g;
+            colArray[i * 3 + 2] = choice.b;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colArray, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.15,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.NormalBlending
+        });
+        const particleMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particleMesh);
+
+
+        // --- LIGHTING (BOOSTED) ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2); // Very bright ambient
+        scene.add(ambientLight);
+
+        // Gold Key Light
+        const spotLight = new THREE.SpotLight(0xD4AF37, 4);
+        spotLight.position.set(20, 20, 20);
+        spotLight.lookAt(0, 0, 0);
+        scene.add(spotLight);
+
+        // Maroon Fill Light
+        const pointLight2 = new THREE.PointLight(0x72383D, 2.5);
+        pointLight2.position.set(-20, -5, 10);
+        scene.add(pointLight2);
+
+        // Rim Light for separation
+        const rimLight = new THREE.DirectionalLight(0xffffff, 1);
+        rimLight.position.set(0, 10, -10);
+        scene.add(rimLight);
+
+        // --- INTERACTION ---
+        let mouseX = 0;
+        let mouseY = 0;
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - windowHalfX);
+            mouseY = (event.clientY - windowHalfY);
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('glass');
+            } else {
+                nav.classList.remove('glass');
+            }
+        });
+
+        // --- ANIMATION LOOP ---
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const elapsedTime = clock.getElapsedTime();
+
+            // Just animate the particles
+            particleMesh.rotation.y = -elapsedTime * 0.05;
+            particleMesh.rotation.z = Math.sin(elapsedTime * 0.1) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+
+</html>
